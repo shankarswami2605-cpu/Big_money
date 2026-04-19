@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "index.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "manifest.json", "use": "@vercel/static" },
+    { "src": "sw.js", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/manifest.json", "dest": "/manifest.json" },
+    { "src": "/sw.js", "dest": "/sw.js" },
+    { "src": "/index.html", "dest": "/index.html" },
+    { "src": "/api/(.*)", "dest": "index.js" },
+    { "src": "/(.*)", "dest": "index.js" }
+  ]
+}

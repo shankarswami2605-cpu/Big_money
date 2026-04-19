@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BIG MONEY</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a1aff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Big Money">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--blue:#1a1aff;--blue2:#2d2dff;--dk:#0000cc;--gold:#f5a623;--gold2:#ffd700;--green:#00c853;--red:#ff3d3d;--bg:#f0f2f8;--card:#fff;--sub:#888;--r:14px;--sh:0 4px 20px rgba(0,0,150,.10)}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:#111;max-width:420px;margin:0 auto;min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;padding-bottom:80px;animation:fi .25s ease}
+.screen.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* AUTH */
+.auth-wrap{display:none;min-height:100vh;background:linear-gradient(160deg,#0000ee,#1a1aff 40%,#0044ff);flex-direction:column;align-items:center;justify-content:center;padding:28px 20px}
+.auth-wrap.active{display:flex}
+.logo{font-family:'Rajdhani',sans-serif;font-size:46px;font-weight:700;color:#fff;letter-spacing:2px;text-shadow:0 2px 20px rgba(255,255,0,.3)}
+.logo span{color:var(--gold2)}
+.tagline{color:rgba(255,255,255,.7);font-size:13px;margin-bottom:28px;letter-spacing:1px}
+.acard{background:#fff;border-radius:22px;padding:26px 20px;width:100%;box-shadow:0 20px 60px rgba(0,0,100,.3)}
+.tabs{display:flex;background:#f0f2f8;border-radius:10px;padding:3px;margin-bottom:20px}
+.tab{flex:1;padding:9px;text-align:center;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;color:var(--sub);transition:.2s}
+.tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 10px rgba(0,0,255,.3)}
+.fg{margin-bottom:13px}
+.fg label{font-size:11px;font-weight:700;color:var(--sub);margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.5px}
+.fi{width:100%;padding:12px 14px;border:2px solid #e8eaf0;border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;transition:.2s;background:#fafbff}
+.fi:focus{border-color:var(--blue);background:#fff}
+.otp-row{display:flex;gap:8px}
+.otp-row .fi{flex:1}
+.send-btn{padding:11px 13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif;transition:.2s}
+.send-btn:disabled{background:#bbb;cursor:not-allowed}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 6px 20px rgba(0,0,255,.3);transition:.2s;margin-top:4px}
+.btn:disabled{background:#bbb;box-shadow:none}
+.sw{text-align:center;margin-top:12px;font-size:13px;color:var(--sub)}
+.sw span{color:var(--blue);font-weight:700;cursor:pointer}
+.otp-note{background:#fff8e0;border-radius:8px;padding:8px 12px;font-size:12px;color:#aa6600;margin-bottom:10px;display:none}
+
+/* TOPBAR */
+.top{background:var(--blue);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,200,.3)}
+.top-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:1px}
+.top-title span{color:var(--gold2)}
+.top-ico{width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;text-decoration:none;cursor:pointer}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:#fff;display:flex;box-shadow:0 -3px 20px rgba(0,0,100,.1);z-index:200;border-top:1px solid #eef}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 4px 7px;cursor:pointer;color:var(--sub);font-size:10px;font-weight:700;gap:2px;transition:.2s}
+.ni.active{color:var(--blue)}
+.ni .ico{font-size:20px}
+.ni.active .ico{transform:scale(1.12)}
+
+/* HOME */
+.banner{margin:14px;border-radius:var(--r);background:linear-gradient(135deg,#005500,#008800,#00aa00);padding:16px;position:relative;overflow:hidden}
+.bn-ttl{color:var(--gold2);font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;text-align:center;border:2px solid var(--gold2);padding:3px 12px;display:block;border-radius:4px;margin-bottom:10px;letter-spacing:2px}
+.br{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.bn{background:var(--gold);color:#000;font-weight:800;font-size:11px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--gold2)}
+.bt{color:#fff;font-size:13px;font-weight:700}
+.bt b{color:var(--gold2);font-size:14px}
+.card{background:var(--card);border-radius:var(--r);padding:15px;margin:0 14px 12px;box-shadow:var(--sh)}
+.mq{background:linear-gradient(135deg,#ff7700,#ff9900);border-radius:25px;margin:0 14px 12px;padding:10px 15px;display:flex;align-items:center;gap:8px;overflow:hidden}
+.mq span{color:#fff;font-weight:700;font-size:12px;white-space:nowrap;animation:mq 22s linear infinite}
+@keyframes mq{0%{transform:translateX(60%)}100%{transform:translateX(-100%)}}
+.dc{background:var(--card);border-radius:var(--r);margin:0 14px 12px;padding:14px;box-shadow:var(--sh)}
+.timer-row{display:flex;gap:3px;align-items:center}
+.tb{background:#00bcd4;color:#fff;font-weight:800;font-size:14px;width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center}
+.tc{font-weight:800;color:#00bcd4}
+.rt{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:12px}
+.ri{text-align:center}
+
+/* DEPOSIT */
+.dtabs{display:flex;border-bottom:2px solid #eef;background:#fff;position:sticky;top:52px;z-index:50}
+.dtab{flex:1;padding:12px;text-align:center;font-weight:800;font-size:14px;cursor:pointer;color:var(--sub);border-bottom:3px solid transparent;margin-bottom:-2px;transition:.2s}
+.dtab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.chip{padding:6px 12px;border-radius:20px;border:2px solid #e0e4f0;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;color:var(--sub)}
+.chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.dep-item{background:var(--card);border-radius:var(--r);padding:13px;margin-bottom:9px;box-shadow:var(--sh);display:flex;align-items:center;justify-content:space-between}
+.dbb{background:var(--blue);color:#fff;border:none;padding:9px 16px;border-radius:9px;font-weight:800;font-size:13px;cursor:pointer;font-family:'Nunito',sans-serif}
+/* BUY button active state */
+.buy-btn:active{transform:scale(.94);box-shadow:0 2px 6px rgba(26,26,255,.2) !important}
+
+/* ======= TOOLS SCREEN (Image 3 style) ======= */
+.tools-screen-bg{background:#f5f5f5;min-height:100vh}
+.tool-card{background:#fff;border-radius:20px;margin:0 14px 14px;box-shadow:0 2px 16px rgba(0,0,0,.10);overflow:hidden;position:relative}
+.tool-card-inner{padding:18px 16px 16px}
+.tool-card-top{display:flex;align-items:center;gap:0;margin-bottom:14px}
+.tool-card-logo{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;margin-right:14px}
+.tool-card-logo img{width:100%;height:100%;object-fit:contain}
+.tool-card-logo-text{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;font-weight:900;color:#fff;margin-right:14px}
+.tool-card-upi{flex:1}
+.tool-card-upi-id{font-size:18px;font-weight:800;color:#fff;letter-spacing:.5px;word-break:break-all}
+.tool-card-phone{font-size:13px;color:rgba(255,255,255,.75);margin-top:3px;font-weight:600}
+.tool-card-brand{position:absolute;right:14px;bottom:16px;opacity:.18;font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;user-select:none;pointer-events:none}
+/* Controls row */
+.tool-card-controls{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.wd-label{font-size:11px;font-weight:800;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.5px;background:rgba(0,0,0,.18);padding:4px 10px;border-radius:8px}
+/* Toggle */
+.wd-toggle{width:54px;height:30px;border-radius:15px;border:none;cursor:pointer;position:relative;transition:.3s;flex-shrink:0;padding:0}
+.wd-toggle.on{background:rgba(0,0,0,.25)}
+.wd-toggle.off{background:rgba(0,0,0,.25)}
+.wd-knob{position:absolute;top:4px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.wd-toggle.on .wd-knob{left:28px}
+.wd-toggle.off .wd-knob{left:4px}
+/* Status badge */
+.wd-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;border:2px solid rgba(255,255,255,.4);color:#fff}
+.wd-status.running{background:rgba(0,0,0,.18)}
+.wd-status.stopped{background:rgba(0,0,0,.25)}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.running .status-dot{background:#00ff7f;box-shadow:0 0 6px #00ff7f;animation:blink 1.4s infinite}
+.stopped .status-dot{background:#ff4444}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+/* Error msg */
+.tool-card-error{background:rgba(0,0,0,.25);border-radius:10px;padding:8px 12px;font-size:12px;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:7px;margin-bottom:10px}
+
+/* FAB */
+.fab{position:fixed;bottom:90px;right:18px;width:56px;height:56px;background:#f5a623;color:#fff;border:none;border-radius:50%;font-size:28px;font-weight:300;cursor:pointer;box-shadow:0 6px 20px rgba(245,166,35,.5);z-index:150;display:none;align-items:center;justify-content:center;line-height:1;transition:.2s}
+.fab.show{display:flex}
+.fab:active{transform:scale(.92)}
+
+/* WALLET TYPE PICKER (Image 4) */
+.wtype-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:4px 0}
+.wtype-item{background:#f8f9ff;border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;border:2px solid #eef;transition:.15s;position:relative}
+.wtype-item:active{transform:scale(.95)}
+.wtype-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:20px;font-weight:900;color:#fff}
+.wtype-name{font-size:12px;font-weight:800}
+.wtype-new{position:absolute;top:-6px;right:-6px;background:#ff3d3d;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px}
+
+/* ADD TOOL STEPS (Image 5 style) */
+.step-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:24px;padding:0 10px}
+.step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;transition:.3s}
+.step-circle.active{background:#2196f3;color:#fff}
+.step-circle.done{background:#4caf50;color:#fff}
+.step-circle.inactive{background:#e0e0e0;color:#999}
+.step-label{font-size:10px;font-weight:700;text-align:center;margin-top:3px}
+.step-label.active{color:#2196f3}
+.step-label.done{color:#4caf50}
+.step-label.inactive{color:#bbb}
+.step-line{flex:1;height:2px;background:#e0e0e0;margin:0 4px;margin-bottom:14px}
+.step-line.done{background:#4caf50}
+.step-col{display:flex;flex-direction:column;align-items:center;flex:1}
+.step-wrap{display:flex;align-items:flex-start;width:100%}
+
+.add-tool-logo{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
+.add-tool-name{font-size:22px;font-weight:800;margin-bottom:18px}
+.authorize-box{background:#e8f4fd;border-radius:12px;padding:14px;margin-bottom:18px;font-size:13px;color:#555;line-height:1.8}
+.phone-input-row{display:flex;align-items:center;border:2px solid #e0e4f0;border-radius:12px;overflow:hidden;background:#fafbff;margin-bottom:12px;transition:.2s}
+.phone-input-row:focus-within{border-color:#2196f3}
+.phone-prefix{display:flex;align-items:center;gap:6px;padding:13px 12px;font-size:14px;font-weight:700;color:#555;border-right:2px solid #e0e4f0;white-space:nowrap;flex-shrink:0}
+.phone-input-row input{flex:1;padding:13px 12px;border:none;outline:none;font-size:15px;font-family:'Nunito',sans-serif;background:transparent;font-weight:700}
+.pass-input-row{display:flex;align-items:center;border:2px solid #e0e4f0;border-radius:12px;overflow:hidden;background:#fafbff;margin-bottom:6px;transition:.2s}
+.pass-input-row:focus-within{border-color:#2196f3}
+.pass-input-row .pi{display:flex;align-items:center;padding:13px 12px;flex-shrink:0;color:#999;font-size:16px}
+.pass-input-row input{flex:1;padding:13px 8px;border:none;outline:none;font-size:15px;font-family:'Nunito',sans-serif;background:transparent;font-weight:600}
+.pass-input-row .eye-btn{padding:13px 12px;border:none;background:transparent;cursor:pointer;color:#bbb;font-size:16px}
+.pass-hint{font-size:11px;color:#aaa;margin-bottom:18px;padding-left:4px}
+.next-btn{width:100%;padding:15px;background:#2196f3;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:.2s}
+.next-btn:active{transform:scale(.98)}
+.next-btn:disabled{background:#bbb}
+
+/* OTP Step */
+.otp-sent-info{background:#e8f5e9;border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;color:#2e7d32;font-weight:700;text-align:center}
+.otp-big-input{width:100%;padding:18px;border:2px solid #e0e4f0;border-radius:14px;font-size:28px;font-weight:800;text-align:center;letter-spacing:8px;font-family:'Nunito',sans-serif;outline:none;transition:.2s;background:#fafbff;margin-bottom:10px}
+.otp-big-input:focus{border-color:#2196f3}
+.otp-countdown{text-align:center;font-size:13px;font-weight:700;margin-bottom:18px}
+
+/* ASSETS */
+.ah{background:var(--blue);padding:16px;color:#fff}
+.ab{background:rgba(0,0,150,.3);border-radius:12px;padding:14px;display:flex;margin-top:12px}
+.bi{flex:1;text-align:center}
+.bi+.bi{border-left:1px solid rgba(255,255,255,.2)}
+.ml{background:#fff;margin:14px;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.mi{display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid #f4f6fc;cursor:pointer;transition:.15s}
+.mi:last-child{border-bottom:none}
+.mi:active{background:#f8f9ff}
+.miw{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+
+/* TEAMS */
+.th{background:linear-gradient(135deg,var(--blue),#0044ff);padding:16px;color:#fff}
+.rcr{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border-radius:10px;padding:10px 13px;margin-top:8px}
+.elig-card{background:linear-gradient(135deg,#fff8e0,#fff3cc);border-radius:var(--r);margin:14px;padding:16px;border:2px solid var(--gold);box-shadow:var(--sh)}
+.elig-step{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.elig-num{width:28px;height:28px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.elig-done{background:var(--green)}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex;animation:fi .2s ease}
+.modal{background:#fff;border-radius:22px 22px 0 0;padding:20px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto}
+.mt{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.mc{cursor:pointer;color:var(--sub);font-size:20px;background:none;border:none;line-height:1}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#222;color:#fff;padding:10px 20px;border-radius:25px;font-size:13px;font-weight:700;opacity:0;transition:.3s;z-index:999;white-space:nowrap;max-width:90vw;text-align:center;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.loader{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.badge{padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700}
+.b-pending{background:#fff3e0;color:#ff9800}
+.b-verified,.b-approved{background:#e8f5e9;color:#2e7d32}
+.b-rejected{background:#ffebee;color:#c62828}
+.ir{display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px solid #f0f2f8}
+.ir:last-child{border-bottom:none}
+.dl-progress{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1a1aff;color:#fff;padding:12px 22px;border-radius:25px;font-size:13px;font-weight:700;z-index:999;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,255,.3)}
+.dl-progress.show{display:flex}
+
+/* TGRID for old investment tools — kept for tool screen */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px;margin-bottom:12px}
+.tc2{background:var(--card);border-radius:var(--r);padding:13px;box-shadow:var(--sh);cursor:pointer;transition:.2s;border:2px solid transparent;position:relative;overflow:hidden}
+.tc2::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.t1::before{background:linear-gradient(90deg,#667eea,#764ba2)}
+.t2::before{background:linear-gradient(90deg,#f5a623,#f9d423)}
+.t3::before{background:linear-gradient(90deg,#11998e,#38ef7d)}
+.t4::before{background:linear-gradient(90deg,#ee0979,#ff6a00)}
+.t5::before{background:linear-gradient(90deg,#2193b0,#6dd5ed)}
+.t6::before{background:linear-gradient(90deg,#373b44,#4286f4)}
+.t-btn{width:100%;margin-top:8px;padding:7px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div class="auth-wrap active" id="authWrap">
+  <div class="logo">BIG <span>MONEY</span></div>
+  <div class="tagline">💰 INVEST • EARN • GROW</div>
+  <div class="acard">
+    <div class="tabs">
+      <div class="tab active" id="lTab" onclick="switchTab('login')">Login</div>
+      <div class="tab" id="rTab" onclick="switchTab('register')">Register</div>
+    </div>
+    <div id="loginForm">
+      <div class="fg"><label>Mobile Number</label>
+        <div style="display:flex;gap:8px">
+          <input class="fi" id="lPhone" type="tel" placeholder="10-digit mobile" maxlength="10" style="flex:1">
+          <button class="send-btn" id="lOtpBtn" onclick="sendOtpScreen('login')" style="padding:11px 14px;font-size:13px">Get OTP</button>
+        </div>
+      </div>
+      <!-- Screen OTP Box — shown after Get OTP clicked -->
+      <div id="lOtpBox" style="display:none;margin-bottom:13px">
+        <div style="background:linear-gradient(135deg,#1a1aff,#0033ff);border-radius:14px;padding:16px;text-align:center;margin-bottom:10px">
+          <div style="color:rgba(255,255,255,.8);font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:6px">YOUR OTP CODE</div>
+          <div id="lOtpDisplay" style="font-size:38px;font-weight:900;color:#ffd700;letter-spacing:10px;font-family:Rajdhani,sans-serif">------</div>
+          <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:6px">⏱ Expires in <span id="lOtpTimer">60</span>s</div>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>Enter OTP</label><input class="fi" id="lOtp" type="number" placeholder="Enter OTP shown above" maxlength="6"></div>
+      </div>
+      <div class="fg"><label>Password</label><input class="fi" id="lPass" type="password" placeholder="Your password"></div>
+      <button class="btn" id="lBtn" onclick="doLogin()">LOGIN</button>
+      <div class="sw" style="margin-top:10px">Forgot password? <span onclick="switchTab('forgot')">Reset Here</span></div>
+      <div class="sw">No account? <span onclick="switchTab('register')">Register Now</span></div>
+    </div>
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Mobile Number</label>
+        <div style="display:flex;gap:8px">
+          <input class="fi" id="rPhone" type="tel" placeholder="10-digit mobile" maxlength="10" style="flex:1">
+          <button class="send-btn" id="rOtpBtn" onclick="sendOtpScreen('register')" style="padding:11px 14px;font-size:13px">Get OTP</button>
+        </div>
+      </div>
+      <!-- Screen OTP Box -->
+      <div id="rOtpBox" style="display:none;margin-bottom:13px">
+        <div style="background:linear-gradient(135deg,#1a1aff,#0033ff);border-radius:14px;padding:16px;text-align:center;margin-bottom:10px">
+          <div style="color:rgba(255,255,255,.8);font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:6px">YOUR OTP CODE</div>
+          <div id="rOtpDisplay" style="font-size:38px;font-weight:900;color:#ffd700;letter-spacing:10px;font-family:Rajdhani,sans-serif">------</div>
+          <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:6px">⏱ Expires in <span id="rOtpTimer">60</span>s</div>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>Enter OTP</label><input class="fi" id="rOtp" type="number" placeholder="Enter OTP shown above" maxlength="6"></div>
+      </div>
+      <div class="fg"><label>Password</label><input class="fi" id="rPass" type="password" placeholder="Create password (min 6)"></div>
+      <div class="fg"><label>Referral Code (Optional)</label><input class="fi" id="rRef" type="text" placeholder="Friend's referral code"></div>
+      <button class="btn" id="rBtn" onclick="doRegister()">CREATE ACCOUNT</button>
+      <div class="sw">Have account? <span onclick="switchTab('login')">Login</span></div>
+    </div>
+    <!-- FORGOT PASSWORD FORM -->
+    <div id="forgotForm" style="display:none">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:36px;margin-bottom:6px">🔐</div>
+        <div style="font-weight:800;font-size:16px;color:#111">Reset Password</div>
+        <div style="font-size:12px;color:var(--sub);margin-top:4px">Enter your mobile number to reset</div>
+      </div>
+      <div class="fg"><label>Mobile Number</label>
+        <div style="display:flex;gap:8px">
+          <input class="fi" id="fPhone" type="tel" placeholder="10-digit mobile" maxlength="10" style="flex:1">
+          <button class="send-btn" id="fOtpBtn" onclick="sendOtpScreen('forgot')" style="padding:11px 14px;font-size:13px">Get OTP</button>
+        </div>
+      </div>
+      <div id="fOtpBox" style="display:none;margin-bottom:13px">
+        <div style="background:linear-gradient(135deg,#1a1aff,#0033ff);border-radius:14px;padding:16px;text-align:center;margin-bottom:10px">
+          <div style="color:rgba(255,255,255,.8);font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:6px">YOUR OTP CODE</div>
+          <div id="fOtpDisplay" style="font-size:38px;font-weight:900;color:#ffd700;letter-spacing:10px;font-family:Rajdhani,sans-serif">------</div>
+          <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:6px">⏱ Expires in <span id="fOtpTimer">60</span>s</div>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>Enter OTP</label><input class="fi" id="fOtp" type="number" placeholder="Enter OTP shown above" maxlength="6"></div>
+      </div>
+      <div class="fg"><label>New Password</label><input class="fi" id="fNewPass" type="password" placeholder="New password (min 6)"></div>
+      <div class="fg"><label>Confirm Password</label><input class="fi" id="fConfPass" type="password" placeholder="Confirm new password"></div>
+      <button class="btn" id="fBtn" onclick="doForgot()">RESET PASSWORD</button>
+      <div class="sw" style="margin-top:10px">Remember password? <span onclick="switchTab('login')">Login</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none">
+
+<!-- HOME -->
+<div class="screen active" id="homeScreen">
+  <div class="top">
+    <div class="top-title">BIG <span>MONEY</span></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <a href="https://drive.google.com/uc?export=download&confirm=t&id=18kNi-LyqUA1hMk8BOPOjuRJy1kSCUiCc" target="_blank" style="display:flex;align-items:center;gap:5px;background:var(--gold2);color:#000;font-size:11px;font-weight:800;padding:6px 10px;border-radius:20px;text-decoration:none;font-family:Nunito,sans-serif">📥 APK</a>
+      <a class="top-ico" href="https://t.me/+QANCRbUr094yZmQ1" target="_blank">🎧</a>
+    </div>
+  </div>
+  <div class="banner">
+    <span class="bn-ttl">» TEAM INVITATION BONUS «</span>
+    <div class="br"><div class="bn">01</div><div class="bt">Invite 5 Members — <b>₹2,000</b></div></div>
+    <div class="br"><div class="bn">02</div><div class="bt">Invite 10 Members — <b>₹7,500</b></div></div>
+    <div class="br"><div class="bn">03</div><div class="bt">Invite 20 Members — <b>₹24,000</b></div></div>
+  </div>
+  <div class="mq"><span>🎉 Welcome to BIG MONEY! Earn 15% daily returns on your investments. Invite friends and earn referral bonuses! 💰 Safe • Secure • Profitable</span></div>
+  <div class="dc">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-size:12px;color:var(--sub);font-weight:700">⏱ Next Reset</div>
+      <div class="timer-row"><div class="tb" id="t1">0</div><div class="tb" id="t2">0</div><div class="tc">:</div><div class="tb" id="t3">0</div><div class="tb" id="t4">0</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--sub);font-weight:700;display:flex;justify-content:space-between"><span>💼 Your Balance</span></div>
+    <div style="font-size:24px;font-weight:800" id="homebal">₹0.00</div>
+    <div class="rt">
+      <div class="ri"><div style="font-size:20px">🪙</div><div style="font-size:11px;font-weight:800;color:var(--blue)">100</div><div style="font-size:10px;color:var(--sub)">10k</div></div>
+      <div class="ri"><div style="font-size:20px">🪙</div><div style="font-size:11px;font-weight:800;color:var(--blue)">200</div><div style="font-size:10px;color:var(--sub)">20k</div></div>
+      <div class="ri"><div style="font-size:20px">🪙</div><div style="font-size:11px;font-weight:800;color:var(--blue)">300</div><div style="font-size:10px;color:var(--sub)">30k</div></div>
+      <div class="ri"><div style="font-size:20px">🪙</div><div style="font-size:11px;font-weight:800;color:var(--blue)">400</div><div style="font-size:10px;color:var(--sub)">40k</div></div>
+      <div class="ri"><div style="font-size:20px">🪙</div><div style="font-size:11px;font-weight:800;color:var(--blue)">500</div><div style="font-size:10px;color:var(--sub)">50k</div></div>
+      <div class="ri"><div style="font-size:20px">🪙</div><div style="font-size:11px;font-weight:800;color:var(--blue)">600</div><div style="font-size:10px;color:var(--sub)">60k</div></div>
+    </div>
+  </div>
+  <!-- AUTO-WITHDRAWAL STATUS BANNER -->
+  <div id="homeAutoWdBanner" style="display:none;margin:0 14px 16px;background:linear-gradient(135deg,#0d1b2a,#1a1aff);border-radius:14px;padding:14px 16px;box-shadow:0 4px 16px rgba(26,26,255,.25)">
+    <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">⚡ Auto-Withdrawal Active</div>
+    <div id="homeAutoWdList"></div>
+  </div>
+</div>
+
+<!-- DEPOSIT -->
+<div class="screen" id="depositScreen">
+  <div class="top"><div class="top-title">Deposit</div></div>
+  <div class="dtabs">
+    <div class="dtab active" id="inrTab" onclick="switchDep('inr')">INR</div>
+    <div class="dtab" id="usdtTab" onclick="switchDep('usdt')">USDT</div>
+  </div>
+
+  <!-- INR CONTENT -->
+  <div id="inrContent">
+    <!-- Balance + How To Card -->
+    <div style="background:#fff;border-radius:18px;margin:14px 14px 10px;padding:16px;box-shadow:0 4px 20px rgba(0,0,150,.08)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Your Balance</div>
+          <div style="font-size:30px;font-weight:900;color:var(--blue);margin:4px 0 2px" id="depBal">₹0.00</div>
+          <div style="font-size:11px;color:#aaa;font-weight:600">Available to invest</div>
+        </div>
+        <button onclick="howToDeposit()" style="background:linear-gradient(135deg,#eef3ff,#e0e8ff);color:var(--blue);border:none;padding:8px 13px;border-radius:10px;font-weight:800;font-size:11px;cursor:pointer;font-family:Nunito,sans-serif;white-space:nowrap">▷ How To Deposit</button>
+      </div>
+      <!-- Info row -->
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <div style="flex:1;background:#f0f4ff;border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:16px;font-weight:900;color:#1a1aff">15%</div>
+          <div style="font-size:10px;color:#888;font-weight:700">Daily Return</div>
+        </div>
+        <div style="flex:1;background:#f0fff4;border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:16px;font-weight:900;color:#00c853">5%</div>
+          <div style="font-size:10px;color:#888;font-weight:700">Bonus</div>
+        </div>
+        <div style="flex:1;background:#fff8e0;border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:16px;font-weight:900;color:#f5a623">UPI</div>
+          <div style="font-size:10px;color:#888;font-weight:700">Instant</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter chips -->
+    <div style="padding:0 14px;margin-bottom:10px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <div class="chip active" onclick="filterDep(this,'all')">All</div>
+        <div class="chip" onclick="filterDep(this,100)">₹100+</div>
+        <div class="chip" onclick="filterDep(this,1000)">₹1k+</div>
+        <div class="chip" onclick="filterDep(this,3000)">₹3k+</div>
+        <div class="chip" onclick="filterDep(this,5000)">₹5k+</div>
+      </div>
+    </div>
+
+    <!-- Deposit List -->
+    <div style="padding:0 14px 20px" id="depList"></div>
+  </div>
+
+  <!-- USDT CONTENT -->
+  <div id="usdtContent" style="display:none">
+    <div style="background:#fff;border-radius:18px;margin:14px 14px 10px;padding:16px;box-shadow:0 4px 20px rgba(0,0,150,.08)">
+      <div style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Your Balance</div>
+      <div style="font-size:30px;font-weight:900;color:var(--blue);margin:4px 0" id="depBal2">₹0.00</div>
+    </div>
+    <div style="padding:0 14px">
+      <div style="background:#fff;border-radius:18px;padding:16px;box-shadow:0 4px 20px rgba(0,0,150,.08)">
+        <div style="font-size:14px;font-weight:800;color:#333;margin-bottom:12px">Enter USDT Amount</div>
+        <div style="display:flex;gap:10px;margin-bottom:12px">
+          <input style="flex:1;padding:12px 13px;border:2px solid #e0e4f0;border-radius:12px;font-size:16px;font-family:Nunito,sans-serif;outline:none;font-weight:700" id="uAmt" type="number" placeholder="0.00 USDT" oninput="calcU()">
+          <div style="background:#f0f2f8;border-radius:12px;padding:12px 13px;font-weight:800;font-size:11px;white-space:nowrap;display:flex;align-items:center">1 USDT<br>=105 INR</div>
+        </div>
+        <div class="ir"><span style="color:var(--sub)">Estimated bonus</span><span style="font-weight:800;color:var(--green)" id="uBonus">0 INR</span></div>
+        <div class="ir"><span style="color:var(--sub)">You will receive</span><span style="font-weight:800;color:var(--blue);font-size:16px" id="uReceive">0 INR</span></div>
+        <div style="background:#fff8f0;border:1px solid #fde8cc;border-radius:10px;padding:11px;margin:12px 0;font-size:12px;color:#cc6600;line-height:1.8">⚠️ Enter amount to deposit.<br>⚠️ Ensure you have a valid TRC20 wallet.<br>⚠️ Send screenshot to Telegram after transfer.</div>
+        <button onclick="confirmUsdt()" style="width:100%;padding:14px;background:linear-gradient(135deg,#0000cc,#1a1aff);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">Confirm USDT Deposit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TOOL SCREEN (New Image-3 style) ====== -->
+<div class="screen tools-screen-bg" id="toolScreen">
+  <div class="top">
+    <div class="top-title">Tools</div>
+    <div class="top-ico">🎧</div>
+  </div>
+  <div style="height:14px"></div>
+
+  <!-- Added tools list -->
+  <div id="toolCardsList">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- Empty state -->
+  <div id="toolEmptyState" style="display:none;text-align:center;padding:50px 20px">
+    <div style="font-size:60px;margin-bottom:16px">💳</div>
+    <div style="font-size:18px;font-weight:800;color:#333;margin-bottom:8px">No Tools Added Yet</div>
+    <div style="font-size:13px;color:#888;margin-bottom:24px">Tap the + button below to add your first payment tool</div>
+  </div>
+</div>
+
+<!-- TEAMS -->
+<div class="screen" id="teamsScreen">
+  <div class="top"><div class="top-title">My <span>Team</span></div></div>
+  <div class="th">
+    <div style="font-size:11px;opacity:.7;font-weight:700;text-transform:uppercase;letter-spacing:.5px">YOUR REFERRAL CODE</div>
+    <div class="rcr"><div style="font-size:17px;font-weight:800;color:var(--gold2);flex:1;letter-spacing:2px" id="myRef">...</div><button onclick="copyRef()" style="background:var(--gold);color:#000;border:none;padding:7px 12px;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;font-family:Nunito,sans-serif">COPY</button></div>
+  </div>
+  <div class="elig-card" id="eligCard">
+    <div style="font-size:15px;font-weight:800;color:#aa6600;margin-bottom:12px">🔓 Unlock Withdrawal</div>
+    <div class="elig-step"><div class="elig-num" id="step1Ico">1</div><div style="font-size:13px;font-weight:700">Refer 2 friends to BIG MONEY</div></div>
+    <div class="elig-step"><div class="elig-num" id="step2Ico">2</div><div style="font-size:13px;font-weight:700">Both friends add money (₹500+ each)</div></div>
+    <div class="elig-step" style="margin-bottom:0"><div class="elig-num" id="step3Ico">3</div><div style="font-size:13px;font-weight:700">Their combined total must reach ₹1000</div></div>
+    <div style="margin-top:12px;background:rgba(0,0,255,.08);border-radius:8px;padding:10px;font-size:12px;font-weight:700;color:var(--blue)" id="eligStatus">Loading eligibility status...</div>
+    <button onclick="shareApp()" style="width:100%;margin-top:10px;padding:10px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;font-family:Nunito,sans-serif">📤 Invite Friends Now</button>
+  </div>
+  <div class="elig-card" id="eligDone" style="display:none;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-color:var(--green)">
+    <div style="font-size:20px;text-align:center;margin-bottom:8px">🎉</div>
+    <div style="font-size:15px;font-weight:800;color:#1b5e20;text-align:center">Withdrawal Unlocked!</div>
+    <div style="font-size:13px;color:#2e7d32;text-align:center;margin-top:6px">You can now withdraw your earnings!</div>
+  </div>
+  <div style="padding:0 14px;margin:14px 0 10px;font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:1px">Bonus Tiers</div>
+  <div style="padding:0 14px">
+    <div style="background:var(--card);border-radius:var(--r);padding:13px;margin-bottom:8px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:linear-gradient(135deg,#f5a623,#ffd700);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0">5</div><div style="flex:1"><div style="font-weight:800;font-size:14px">Invite 5 Members</div><div style="font-size:12px;color:var(--sub)">Each completes ₹15,000 tasks</div></div><div style="font-size:18px;font-weight:800;color:var(--green)">₹2,000</div></div>
+    <div style="background:var(--card);border-radius:var(--r);padding:13px;margin-bottom:8px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:linear-gradient(135deg,#f5a623,#ffd700);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0">10</div><div style="flex:1"><div style="font-weight:800;font-size:14px">Invite 10 Members</div><div style="font-size:12px;color:var(--sub)">Each completes ₹25,000 tasks</div></div><div style="font-size:18px;font-weight:800;color:var(--green)">₹7,500</div></div>
+    <div style="background:var(--card);border-radius:var(--r);padding:13px;margin-bottom:8px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;background:linear-gradient(135deg,#f5a623,#ffd700);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;flex-shrink:0">20</div><div style="flex:1"><div style="font-weight:800;font-size:14px">Invite 20 Members</div><div style="font-size:12px;color:var(--sub)">Each completes ₹35,000 tasks</div></div><div style="font-size:18px;font-weight:800;color:var(--green)">₹24,000</div></div>
+  </div>
+  <div style="background:var(--card);margin:0 14px 14px;border-radius:var(--r);padding:14px;box-shadow:var(--sh)">
+    <div class="ir"><span style="color:var(--sub)">Total Members</span><span style="font-weight:800;color:var(--blue)" id="tMembers">0</span></div>
+    <div class="ir"><span style="color:var(--sub)">Friends Deposited</span><span style="font-weight:800;color:var(--green)" id="tFriendsDep">0 / 2</span></div>
+    <div class="ir"><span style="color:var(--sub)">Referral Bonus</span><span style="font-weight:800;color:var(--blue)" id="tBonus">₹0</span></div>
+  </div>
+</div>
+
+<!-- ASSETS -->
+<div class="screen" id="assetsScreen">
+  <div class="top"><div class="top-title">Assets</div></div>
+  <div class="ah">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+      <div style="width:46px;height:46px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px">👤</div>
+      <div style="flex:1">
+        <div style="font-size:17px;font-weight:800;display:flex;align-items:center;gap:6px" id="aPhone">-- <span onclick="copyText('')" style="cursor:pointer;font-size:14px">📋</span></div>
+        <div style="font-size:12px;opacity:.7;display:flex;align-items:center;gap:5px;margin-top:3px">ID: <span id="aId">--</span> <span onclick="copyText(document.getElementById('aId').textContent)" style="cursor:pointer">📋</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 12px;border-radius:18px;font-size:12px;font-weight:700">Reward: 5%</div>
+    </div>
+    <div class="ab">
+      <div class="bi"><div style="font-size:22px;font-weight:800" id="aBal">₹0.00</div><div style="font-size:11px;opacity:.7;margin-top:3px">Deposit Amount</div></div>
+      <div class="bi"><div style="font-size:22px;font-weight:800" id="aEarn">₹0.00</div><div style="font-size:11px;opacity:.7;margin-top:3px">Earnings</div></div>
+    </div>
+  </div>
+  <div class="ml">
+    <div class="mi" onclick="openModal('txns')"><div class="miw" style="background:#eef3ff">💵</div><div style="font-size:14px;font-weight:700;flex:1">Transactions</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="openModal('depHist')"><div class="miw" style="background:#e8fff0">📥</div><div style="font-size:14px;font-weight:700;flex:1">Deposit History</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="openModal('wdHist')"><div class="miw" style="background:#fff0f0">📤</div><div style="font-size:14px;font-weight:700;flex:1">Withdrawal History</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="openModal('withdraw')"><div class="miw" style="background:#fff8e0">💸</div><div style="font-size:14px;font-weight:700;flex:1">Withdraw Funds</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="window.open('https://t.me/big_money2026','_blank')"><div class="miw" style="background:#fff0f8">❓</div><div style="font-size:14px;font-weight:700;flex:1">Support Center</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="openModal('pin')"><div class="miw" style="background:#f0f4ff">🛡️</div><div style="font-size:14px;font-weight:700;flex:1">Payment PIN</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="openModal('chpass')"><div class="miw" style="background:#e8f8ff">🔒</div><div style="font-size:14px;font-weight:700;flex:1">Change Password</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="logout()"><div class="miw" style="background:#fff0f0">🚪</div><div style="font-size:14px;font-weight:700;flex:1;color:var(--red)">Logout</div><div style="color:#ccc">›</div></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <div class="ni active" id="nav-home" onclick="navigate('home')"><div class="ico">🏠</div><span>Home</span></div>
+  <div class="ni" id="nav-deposit" onclick="navigate('deposit')"><div class="ico">📋</div><span>Deposit</span></div>
+  <div class="ni" id="nav-tool" onclick="navigate('tool')"><div class="ico">⚡</div><span>Tool</span></div>
+  <div class="ni" id="nav-teams" onclick="navigate('teams')"><div class="ico">👥</div><span>Teams</span></div>
+  <div class="ni" id="nav-assets" onclick="navigate('assets')"><div class="ico">👤</div><span>Assets</span></div>
+</div>
+
+<!-- FAB + button for Tool screen -->
+<button class="fab" id="fabBtn" onclick="openWalletTypePicker()">＋</button>
+
+</div><!-- end app -->
+
+<!-- MODAL OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeOverlay(event)"><div class="modal" id="modalBody"></div></div>
+<div class="toast" id="toast"></div>
+<div class="dl-progress" id="dlProgress"></div>
+
+<script>
+const API = '';
+const UPI_LIST = [
+  'sachinss098@freecharge',
+  's.swami.4@superyes',
+  'sonufi@ptyes',
+  'kavyakavya80869@okhdfcbank',
+  'shankarswami0869@ybl'
+];;
+let currentUPI = '';
+function setRandomUPI(){ currentUPI = UPI_LIST[Math.floor(Math.random()*UPI_LIST.length)]; const el=document.getElementById('upi-id-display'); if(el) el.innerText=currentUPI; }
+
+let TK = localStorage.getItem('bm_tk')||'';
+let U  = JSON.parse(localStorage.getItem('bm_u')||'null');
+
+// ============================================================
+// TOOL WALLET DEFINITIONS  (Image 4 — 6 types)
+// ============================================================
+const WALLET_TYPES = [
+  {id:'mobikwik', name:'Mobikwik',  color:'#0057d9', bg:'#e8f0ff', letter:'M+', cardBg:'#1a4dcc', upiSuffix:'@ikwik',   brand:'MobiKwik', emoji:'💙'},
+  {id:'phonepe',  name:'PhonePe',   color:'#5f259f', bg:'#f0e8ff', letter:'Pe', cardBg:'#5f259f', upiSuffix:'@ybl',     brand:'PhonePe',  emoji:'💜'},
+  {id:'freecharge',name:'Freecharge',color:'#ff6600',bg:'#fff0e8', letter:'F',  cardBg:'#c0392b', upiSuffix:'@freecharge',brand:'Freecharge',emoji:'🔴'},
+  {id:'airtel',   name:'Airtel',    color:'#e40000', bg:'#fff0f0', letter:'Ai', cardBg:'#e53935', upiSuffix:'@airtel',  brand:'Airtel',   emoji:'❤️'},
+  {id:'indus',    name:'Indus',     color:'#8b0000', bg:'#f5e8e8', letter:'In', cardBg:'#7b1fa2', upiSuffix:'@indus',   brand:'Indus',    emoji:'💙'},
+  {id:'paytm',    name:'Paytm',     color:'#002970', bg:'#e8f4ff', letter:'Pt', cardBg:'#1565c0', upiSuffix:'@paytm',  brand:'Paytm',    emoji:'🔵', isNew:true},
+];
+
+// userTools: array of {id, typeId, phone, pass, upiId, running, wdActive, addedAt}
+let userTools = JSON.parse(localStorage.getItem('bm_tools')||'[]');
+function saveTools(){ localStorage.setItem('bm_tools', JSON.stringify(userTools)); }
+
+// Add-tool flow state
+let addStep=0, addTypeId='', addPhone='', addPass='', addOtpTimer=null, addOtpLeft=0;
+let addScreenOtp = '';
+let _selDepTool = -1;
+let _depAmt = 0;
+let tmr;
+
+// ============================================================
+// DEPS
+// ============================================================
+const DEPS = [100,250,500,750,1000,1500,2000,3000,5000,7500,10000,15000,20000,30000,50000];
+
+async function api(path, method='GET', body=null, _retry=0){
+  // Always get fresh token from localStorage in case it was updated
+  const token = localStorage.getItem('bm_tk') || TK || '';
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+  };
+  if(body) opts.body = JSON.stringify(body);
+  try {
+    const r = await fetch(API + '/api' + path, opts);
+    // If server error (5xx) and haven't retried — wait and retry once
+    if(r.status >= 500 && _retry < 2){
+      await new Promise(res => setTimeout(res, 800 * (_retry + 1)));
+      return api(path, method, body, _retry + 1);
+    }
+    const data = await r.json();
+    // If 401 and token exists — maybe cold start, retry once
+    if(!data.success && (data.error === 'Invalid token') && _retry < 1){
+      await new Promise(res => setTimeout(res, 600));
+      return api(path, method, body, _retry + 1);
+    }
+    return data;
+  } catch(e) {
+    if(_retry < 2){
+      await new Promise(res => setTimeout(res, 1000 * (_retry + 1)));
+      return api(path, method, body, _retry + 1);
+    }
+    return { success: false, message: 'Network error. Check connection.' };
+  }
+}
+
+if(TK&&U){ showApp(); refreshUser(); }
+
+function showApp(){
+  document.getElementById('authWrap').classList.remove('active');
+  document.getElementById('app').style.display='block';
+  renderToolScreen(); renderDeps(); renderHomeAutoWdBanner();
+  updateUI(); startTimer();
+  const ref=new URLSearchParams(window.location.search).get('ref');
+  if(ref){ switchTab('register'); setTimeout(()=>{ const el=document.getElementById('rRef'); if(el) el.value=ref; },100); }
+}
+
+async function refreshUser(){
+  const token = localStorage.getItem('bm_tk') || TK;
+  if(!token) return;
+  TK = token; // sync in-memory token
+  try {
+    const d = await api('/me');
+    if(d && d.success){
+      U = d.user;
+      localStorage.setItem('bm_u', JSON.stringify(U));
+      updateUI();
+    }
+    // On any failure — silently keep cached user, never logout
+  } catch(e) {}
+}
+
+function updateUI(){
+  if(!U) return;
+  const bal=(U.balance||0).toFixed(2), earn=(U.earnings||0).toFixed(2);
+  document.getElementById('homebal').textContent='₹'+bal;
+  document.getElementById('depBal').textContent='₹'+bal;
+  document.getElementById('depBal2').textContent='₹'+bal;
+  document.getElementById('aBal').textContent='₹'+bal;
+  document.getElementById('aEarn').textContent='₹'+earn;
+  const ph=U.phone||'--';
+  document.getElementById('aPhone').innerHTML=ph+' <span onclick="copyText(\''+ph+'\')" style="cursor:pointer;font-size:14px">📋</span>';
+  document.getElementById('aId').textContent=U.uid||U._id||'--';
+  document.getElementById('myRef').textContent=U.refCode||U.uid||'--';
+  checkEligibility();
+}
+
+function checkEligibility(){
+  const fd=parseInt((document.getElementById('tFriendsDep')?.textContent||'0').split('/')[0])||0;
+  ['step1Ico','step2Ico','step3Ico'].forEach((id,i)=>{ const el=document.getElementById(id); if(el) el.classList.toggle('elig-done',fd>=(i===0?1:2)); });
+  const all=fd>=2;
+  const ec=document.getElementById('eligCard'),ed=document.getElementById('eligDone');
+  if(ec) ec.style.display=all?'none':'block';
+  if(ed) ed.style.display=all?'block':'none';
+  const es=document.getElementById('eligStatus');
+  if(es) es.textContent=all?'✅ All conditions met! Withdrawal unlocked.':'⚠️ Refer 2 friends who each deposit ₹500+. Progress: '+fd+'/2 friends deposited.';
+}
+
+// ============================================================
+// NAV
+// ============================================================
+function navigate(tab){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById(tab+'Screen').classList.add('active');
+  document.getElementById('nav-'+tab).classList.add('active');
+  const fab=document.getElementById('fabBtn');
+  fab.classList.toggle('show', tab==='tool');
+  if(tab==='assets'||tab==='teams') refreshUser();
+  if(tab==='teams') loadTeam();
+  if(tab==='tool') renderToolScreen();
+}
+
+// ============================================================
+// ====== TOOL SCREEN RENDER (Image 3 style) ======
+// ============================================================
+function getWalletDef(typeId){ return WALLET_TYPES.find(w=>w.id===typeId)||WALLET_TYPES[0]; }
+
+function renderToolScreen(){
+  const list=document.getElementById('toolCardsList');
+  const empty=document.getElementById('toolEmptyState');
+  if(!list) return;
+  if(userTools.length===0){
+    list.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  list.innerHTML = userTools.map((t,idx)=>{
+    const def = getWalletDef(t.typeId);
+    const isRunning = t.running;
+    const wdOn = t.wdActive;
+    return `
+    <div class="tool-card" id="tcard-${t.id}">
+      <div class="tool-card-inner" style="background:${def.cardBg}">
+        <div class="tool-card-controls">
+          <span class="wd-label">Withdraw</span>
+          <button class="wd-toggle ${wdOn?'on':'off'}" onclick="toggleWd(${idx})" title="Toggle auto-withdraw">
+            <span class="wd-knob"></span>
+          </button>
+          <div class="wd-status ${wdOn?'running':'stopped'}">
+            <span class="status-dot"></span>
+            ${wdOn?'RUNNING':'READY'}
+          </div>
+        </div>
+        ${(t.running===false)?`<div class="tool-card-error"><span>ℹ️</span> Please relink the tool or modify the upi and relink.</div>`:''}
+        <div class="tool-card-upi-id">${t.upiId}</div>
+        <div class="tool-card-phone">${t.phone}</div>
+        <div class="tool-card-brand">${def.brand}</div>
+      </div>
+      <div style="display:flex;gap:8px;padding:12px 14px;background:#fff">
+        <button onclick="relinkTool(${idx})" style="flex:1;padding:9px;background:#f0f2f8;color:#555;border:none;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer;font-family:Nunito,sans-serif">🔗 Relink</button>
+        <button onclick="deleteTool(${idx})" style="flex:1;padding:9px;background:#fff0f0;color:var(--red);border:1px solid #fdd;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer;font-family:Nunito,sans-serif">🗑 Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// HOME AUTO-WITHDRAWAL BANNER
+// ============================================================
+function renderHomeAutoWdBanner(){
+  const banner = document.getElementById('homeAutoWdBanner');
+  const listEl = document.getElementById('homeAutoWdList');
+  if(!banner || !listEl) return;
+  const active = userTools.filter(t => t.wdActive && t.running);
+  if(!active.length){ banner.style.display='none'; return; }
+  banner.style.display='block';
+  listEl.innerHTML = active.map(t=>{
+    const def = getWalletDef(t.typeId);
+    const totalBal = Math.floor((U?.balance||0)+(U?.earnings||0));
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="width:34px;height:34px;border-radius:10px;background:${def.color};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0">${def.letter}</div>
+      <div style="flex:1">
+        <div style="color:#fff;font-weight:800;font-size:13px">${def.name} <span style="background:rgba(0,255,127,.2);color:#00ff7f;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:700">RUNNING</span></div>
+        <div style="color:rgba(255,255,255,.6);font-size:11px">UPI: ${t.upiId} • Request: ₹${totalBal} (Full Balance)</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+
+function toggleWd(idx){
+  const t = userTools[idx];
+  if(!t) return;
+  const newState = !t.wdActive;
+  t.wdActive = newState;
+  userTools[idx] = t;
+  saveTools();
+
+  if(newState){
+    const totalBal = (U?.balance||0)+(U?.earnings||0);
+    const def = getWalletDef(t.typeId);
+    // Auto-withdrawal: FULL wallet balance — no minimum, no percentage limit
+    const maxAmt = Math.floor(totalBal);
+    if(maxAmt < 1){
+      toast('⚠️ Wallet balance is zero, cannot auto-withdraw');
+      t.wdActive = false; userTools[idx]=t; saveTools(); renderToolScreen(); renderHomeAutoWdBanner(); return;
+    }
+    // Send auto-withdrawal request to backend (admin will get email)
+    api('/withdraw/auto','POST',{
+      amount: maxAmt,
+      upiId: t.upiId,
+      accountName: t.phone,
+      toolId: t.id,
+      phone: t.phone,
+      walletType: def.name,
+      autoWithdraw: true
+    }).then(d=>{
+      if(d.success) toast('✅ Auto-withdrawal request sent! Admin will process ₹'+maxAmt);
+      else toast('⚠️ '+def.name+': '+(d.message||'Request failed'));
+    });
+    toast('▶️ Auto-Withdraw ON — ₹'+maxAmt+' request sent to admin');
+  } else {
+    toast('⏸ '+getWalletDef(t.typeId).name+' Auto-Withdraw OFF');
+  }
+  renderToolScreen(); renderHomeAutoWdBanner();
+}
+
+// ============================================================
+// DELETE TOOL
+// ============================================================
+function deleteTool(idx){
+  const t=userTools[idx];
+  const def=getWalletDef(t.typeId);
+  document.getElementById('modalBody').innerHTML=`
+    <div class="mt">Remove ${def.name} <button class="mc" onclick="closeModal()">✕</button></div>
+    <div style="text-align:center;padding:20px 0">
+      <div style="font-size:48px;margin-bottom:12px">🗑</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:18px;color:#555">Remove this tool permanently?</div>
+      <button onclick="confirmDeleteTool(${idx})" style="width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;margin-bottom:8px">Yes, Remove</button>
+      <button onclick="closeModal()" style="width:100%;padding:11px;background:#f0f2f8;color:#666;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">Cancel</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+function confirmDeleteTool(idx){ userTools.splice(idx,1); saveTools(); closeModal(); renderToolScreen(); toast('Tool removed'); }
+
+// ============================================================
+// RELINK TOOL
+// ============================================================
+function relinkTool(idx){
+  const t=userTools[idx];
+  addTypeId=t.typeId;
+  // Start from step 1 pre-filled with same phone
+  addPhone=t.phone;
+  addPass='';
+  addStep=1;
+  openAddStepModal(idx); // pass idx so we update that slot
+}
+
+// ============================================================
+// WALLET TYPE PICKER (Image 4)
+// ============================================================
+function openWalletTypePicker(){
+  const grid = WALLET_TYPES.map(w=>`
+    <div class="wtype-item" onclick="startAddTool('${w.id}')">
+      ${w.isNew?'<span class="wtype-new">NEW</span>':''}
+      <div class="wtype-icon" style="background:${w.color}">${w.letter}</div>
+      <div class="wtype-name" style="color:${w.color}">${w.name}</div>
+    </div>`).join('');
+  document.getElementById('modalBody').innerHTML=`
+    <div class="mt">Select Wallet Type <button class="mc" onclick="closeModal()">✕</button></div>
+    <div class="wtype-grid">${grid}</div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+// ============================================================
+// ADD TOOL 3-STEP FLOW (Image 5)
+// ============================================================
+function startAddTool(typeId){
+  addTypeId=typeId; addStep=1; addPhone=''; addPass='';
+  openAddStepModal(null);
+}
+
+function openAddStepModal(relinkIdx){
+  const def=getWalletDef(addTypeId);
+  document.getElementById('overlay').classList.add('open');
+
+  // Step bar HTML
+  function stepBarHTML(){
+    const labels=['Details','Verify','Complete'];
+    let html='<div class="step-wrap">';
+    labels.forEach((lbl,i)=>{
+      const s=i+1;
+      const cls=addStep>s?'done':addStep===s?'active':'inactive';
+      html+=`<div class="step-col">
+        <div class="step-circle ${cls}">${addStep>s?'✓':s}</div>
+        <div class="step-label ${cls}">${lbl}</div>
+      </div>`;
+      if(i<2) html+=`<div class="step-line ${addStep>s+1?'done':''}"></div>`;
+    });
+    html+='</div>';
+    return html;
+  }
+
+  if(addStep===1){
+    document.getElementById('modalBody').innerHTML=`
+      <div class="mt">Add ${def.name} <button class="mc" onclick="closeModal()">✕</button></div>
+      <div class="step-bar">${stepBarHTML()}</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+        <div class="add-tool-logo" style="background:${def.color}">${def.letter}</div>
+        <div class="add-tool-name">${def.name}</div>
+      </div>
+      <div style="color:#2196f3;font-size:16px;font-weight:800;margin-bottom:12px">Authorize ${def.name}</div>
+      <div class="authorize-box">
+        Let us enjoy the work.<br>
+        1) Enter your ${def.name} number.<br>
+        2) Click the Next button to proceed.
+      </div>
+      <div class="phone-input-row">
+        <div class="phone-prefix">📞 +91</div>
+        <input id="addPhone" type="tel" placeholder="Enter your phone number" maxlength="10" oninput="this.value=this.value.replace(/\\D/g,'')" value="${addPhone}">
+      </div>
+      <div class="pass-input-row" id="passRow">
+        <span class="pi">🔒</span>
+        <input id="addPass" type="password" placeholder="Enter Payment Password (4...)" value="${addPass}">
+        <button class="eye-btn" onclick="togglePassVis()">👁</button>
+      </div>
+      <div class="pass-hint">Letters, numbers, and symbols. No spaces.</div>
+      <button class="next-btn" onclick="addStep1Next()">Next</button>`;
+  }
+  else if(addStep===2){
+    document.getElementById('modalBody').innerHTML=`
+      <div class="mt">Add ${def.name} <button class="mc" onclick="closeModal()">✕</button></div>
+      <div class="step-bar">${stepBarHTML()}</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div class="add-tool-logo" style="background:${def.color}">${def.letter}</div>
+        <div class="add-tool-name">${def.name}</div>
+      </div>
+      <div style="color:#2196f3;font-size:16px;font-weight:800;margin-bottom:12px">Verify OTP</div>
+      <div style="background:linear-gradient(135deg,#1a1aff,#0033ff);border-radius:14px;padding:18px;text-align:center;margin-bottom:14px">
+        <div style="color:rgba(255,255,255,.8);font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">YOUR OTP CODE</div>
+        <div id="toolOtpDisplay" style="font-size:42px;font-weight:900;color:#ffd700;letter-spacing:12px;font-family:Rajdhani,sans-serif">${addScreenOtp||'------'}</div>
+        <div style="color:rgba(255,255,255,.6);font-size:11px;margin-top:8px">⏱ Expires in <span id="otpSec">60</span>s</div>
+      </div>
+      <input id="addOtp" class="otp-big-input" type="number" placeholder="Enter OTP shown above" maxlength="6">
+      <button class="next-btn" id="verifyOtpBtn" onclick="addStep2Verify()">Verify & Continue</button>
+      <button onclick="addStep=1;addScreenOtp='';openAddStepModal(null)" style="width:100%;padding:11px;background:#f0f2f8;color:#666;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;margin-top:8px">← Back</button>`;
+    startAddOtpTimer();
+  }
+  else if(addStep===3){
+    document.getElementById('modalBody').innerHTML=`
+      <div class="mt">Add ${def.name} <button class="mc" onclick="closeModal()">✕</button></div>
+      <div class="step-bar">${stepBarHTML()}</div>
+      <div style="text-align:center;padding:20px 10px">
+        <div style="font-size:60px;margin-bottom:14px">🎉</div>
+        <div style="font-size:20px;font-weight:800;color:#4caf50;margin-bottom:8px">${def.name} Added!</div>
+        <div style="font-size:13px;color:#666;line-height:1.9;margin-bottom:18px">
+          Your tool is now <b style="color:#00c853">Running</b>.<br>
+          Toggle the Withdraw switch to auto-withdraw.
+        </div>
+        <div style="background:#f0fff4;border-radius:12px;padding:14px;font-size:13px;color:#2e7d32;line-height:2;margin-bottom:20px;text-align:left">
+          ✅ Phone: <b>+91 ${addPhone}</b><br>
+          ✅ UPI: <b>${addPhone}${def.upiSuffix}</b><br>
+          ✅ Status: <b>Running</b>
+        </div>
+        <button onclick="closeModal();renderToolScreen()" style="width:100%;padding:13px;background:${def.color};color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">✅ Done</button>
+      </div>`;
+  }
+}
+
+function togglePassVis(){
+  const inp=document.getElementById('addPass');
+  if(!inp) return;
+  inp.type=inp.type==='password'?'text':'password';
+}
+
+async function addStep1Next(){
+  const phEl = document.getElementById('addPhone');
+  const psEl = document.getElementById('addPass');
+  if(!phEl || !psEl){ toast('Form error, please close and try again'); return; }
+  const ph = phEl.value.trim();
+  const ps = psEl.value.trim();
+  if(!ph || ph.length < 10){ toast('Enter valid 10-digit mobile number'); return; }
+  if(!ps || ps.length < 4){ toast('Enter payment password (min 4 chars)'); return; }
+  addPhone=ph; addPass=ps;
+
+  // Show loading on Next button
+  const btn = document.querySelector('.next-btn');
+  if(btn){ btn.disabled=true; btn.textContent='Please wait...'; }
+
+  // Generate OTP on frontend directly
+  const otp = String(Math.floor(100000 + Math.random()*900000));
+  addScreenOtp = otp;
+
+  // Register OTP on backend (fire and forget)
+  api('/send-otp','POST',{phone:ph}).catch(()=>{});
+
+  // Go to step 2
+  addStep=2;
+  openAddStepModal(null);
+}
+
+function startAddOtpTimer(){
+  clearInterval(addOtpTimer);
+  addOtpLeft=60;
+  const sec=document.getElementById('otpSec');
+  if(sec) sec.textContent=addOtpLeft;
+
+  // AUTO-FILL the OTP in input field
+  const addOtpInput = document.getElementById('addOtp');
+  if(addOtpInput && addScreenOtp){
+    addOtpInput.value = addScreenOtp;
+    addOtpInput.style.background='#fffde7';
+    addOtpInput.style.borderColor='#ffd700';
+    addOtpInput.style.transition='all .4s';
+    setTimeout(()=>{ addOtpInput.style.background=''; addOtpInput.style.borderColor=''; }, 1800);
+  }
+
+  addOtpTimer=setInterval(()=>{
+    addOtpLeft--;
+    const s=document.getElementById('otpSec');
+    if(s) s.textContent=addOtpLeft;
+    if(addOtpLeft<=0){
+      clearInterval(addOtpTimer);
+      const cd=document.getElementById('otpCd');
+      if(cd) cd.innerHTML='<span style="color:#2196f3;cursor:pointer;font-weight:700" onclick="startAddOtpTimer();this.parentElement.innerHTML=\'Resend in <span id=otpSec>60</span>s\'">🔄 Resend OTP</span>';
+    }
+  },1000);
+}
+
+async function addStep2Verify(){
+  const otp=(document.getElementById('addOtp')?.value||'').trim();
+  if(!otp||otp.length<4){ toast('⚠️ Enter the OTP shown above'); return; }
+  const btn=document.getElementById('verifyOtpBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span>Verifying...';
+  const def=getWalletDef(addTypeId);
+  clearInterval(addOtpTimer);
+
+  // Check against locally generated screen OTP
+  if(!addScreenOtp || otp !== addScreenOtp){
+    btn.disabled=false; btn.textContent='Verify & Continue';
+    toast('❌ Wrong OTP. Enter the OTP shown on screen.');
+    return;
+  }
+
+  // OTP matched — proceed directly without backend verify
+  const upiId=addPhone+def.upiSuffix;
+  // Save tool locally — also notify backend in background
+  const newTool={
+    id: Date.now(),
+    typeId: addTypeId,
+    phone: addPhone,
+    pass: addPass,
+    upiId,
+    running: true,
+    wdActive: false,
+    addedAt: Date.now()
+  };
+  userTools.push(newTool);
+  saveTools();
+
+  // Notify backend in background (non-blocking)
+  api('/tool/add-wallet','POST',{walletId:addTypeId,walletName:def.name,phone:addPhone,otp,upiId}).catch(()=>{});
+
+  addScreenOtp='';
+  addStep=3;
+  openAddStepModal(null);
+}
+
+// ============================================================
+// DEPOSIT
+// ============================================================
+function switchDep(t){ document.getElementById('inrContent').style.display=t==='inr'?'block':'none'; document.getElementById('usdtContent').style.display=t==='usdt'?'block':'none'; document.getElementById('inrTab').classList.toggle('active',t==='inr'); document.getElementById('usdtTab').classList.toggle('active',t==='usdt'); }
+function filterDep(el,min){ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); renderDeps(min); }
+function renderDeps(min='all'){
+  let amts=DEPS; if(min!=='all') amts=amts.filter(a=>a>=min);
+  document.getElementById('depList').innerHTML=amts.map(a=>{
+    const inc=(a*.05).toFixed(2), bonus=(a*.10).toFixed(2), q=(a*1.15).toFixed(2);
+    const daily=(a*.15).toFixed(2);
+    return `<div style="background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 3px 16px rgba(0,0,150,.08);display:flex;align-items:center;gap:12px;border:1.5px solid #eef">
+      <div style="width:46px;height:46px;background:linear-gradient(135deg,#1a1aff,#4444ff);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:900;flex-shrink:0;box-shadow:0 4px 12px rgba(26,26,255,.3)">₹</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+          <div style="font-weight:900;font-size:16px;color:#111">₹${a.toLocaleString('en-IN')}</div>
+          <span style="background:#e8eeff;color:var(--blue);font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;flex-shrink:0">UPI</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="font-size:10px;color:var(--sub);font-weight:700">Daily: <b style="color:var(--green)">₹${daily}</b></span>
+          <span style="font-size:10px;color:var(--sub);font-weight:700">Bonus: <b style="color:#f5a623">₹${inc}</b></span>
+          <span style="font-size:10px;color:var(--sub);font-weight:700">Total: <b style="color:var(--blue)">₹${q}</b></span>
+        </div>
+      </div>
+      <button onclick="initDeposit(${Math.round(a)})" style="background:linear-gradient(135deg,#1a1aff,#0033ff);color:#fff;border:none;padding:11px 18px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;font-family:Nunito,sans-serif;box-shadow:0 4px 12px rgba(26,26,255,.35);flex-shrink:0;transition:.15s;white-space:nowrap" onmousedown="this.style.transform='scale(.96)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform='scale(1)'">BUY</button>
+    </div>`;
+  }).join('');
+}
+function howToDeposit(){ document.getElementById('modalBody').innerHTML='<div class="mt">How To Add Money <button class="mc" onclick="closeModal()">&#x2715;</button></div><div style="font-size:14px;line-height:2.4;color:#333"><b style="color:var(--blue)">Step 1:</b> Choose amount & click BUY<br><b style="color:var(--blue)">Step 2:</b> Copy the UPI ID shown<br><b style="color:var(--blue)">Step 3:</b> Open any UPI app & send exact amount<br><b style="color:var(--blue)">Step 4:</b> Note the UTR/Reference number<br><b style="color:var(--blue)">Step 5:</b> Click I\'ve Paid & enter UTR<br><b style="color:var(--blue)">Step 6:</b> Admin verifies → balance updates!</div>'; document.getElementById('overlay').classList.add('open'); }
+function copyUpi(btn){ const u=document.getElementById('upi-id-display')?.innerText||currentUPI; window._lastCopiedUpi=u; navigator.clipboard.writeText(u).then(()=>{ btn.textContent='✅ Copied!'; btn.style.background='#00c853'; setTimeout(()=>{ btn.textContent='📋 Copy'; btn.style.background='var(--blue)'; },2000); }).catch(()=>alert(u)); }
+function openUpiApp(appId,amt){ amt=Math.round(Number(amt)); var pa=encodeURIComponent(currentUPI),pn=encodeURIComponent('Shankar'),tn=encodeURIComponent('BigMoney'),am=String(amt); var pkgs={phonepe:'com.phonepe.app',gpay:'com.google.android.apps.nbu.paisa.user',paytm:'net.one97.paytm',bhim:'in.org.npci.upiapp',mobikwik:'com.mobikwik_new',amazon:'in.amazon.mShop.android.shopping'}; var pkg=pkgs[appId]||'com.phonepe.app'; window.location.href='intent://pay?pa='+pa+'&pn='+pn+'&am='+am+'&tn='+tn+'&cu=INR#Intent;scheme=upi;package='+pkg+';S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3D'+pkg+';end'; }
+
+async function initDeposit(amt){
+  amt = Math.round(Number(amt));
+  if(!TK){ toast('⚠️ Please login first'); return; }
+  // U null ho sakta hai agar page fresh load hua — localStorage se dobara lo
+  if(!U){
+    const saved = localStorage.getItem('bm_u');
+    if(saved){ try{ U = JSON.parse(saved); }catch(e){} }
+  }
+  if(!U){ toast('⚠️ Session expired. Please login again.'); return; }
+  _depAmt = amt;
+  _selDepTool = -1;
+  setRandomUPI();
+  document.getElementById('modalBody').innerHTML = '';
+  if(userTools.length > 0){
+    renderDepositWalletModal(amt);
+  } else {
+    showOldDepositFlow(amt, null, null, null);
+  }
+  document.getElementById('overlay').classList.add('open');
+}
+
+function renderDepositWalletModal(amt){
+  const toolOpts = userTools.map((t,i)=>{
+    const def = getWalletDef(t.typeId);
+    const ph = t.phone.replace(/(\d{3})(\d{3})(\d{4})/,'$1 $2 $3');
+    return `<div id="dtool-${i}" onclick="selectDepositTool(${i})"
+      style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid #eee;border-radius:14px;cursor:pointer;margin-bottom:10px;transition:.2s;background:#fff">
+      <div style="width:44px;height:44px;border-radius:12px;background:${def.color};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0">${def.letter}</div>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:15px">${def.name.toUpperCase()}</div>
+        <div style="font-size:12px;color:#888">Phone: ${ph}</div>
+      </div>
+      <div id="dradio-${i}" style="width:22px;height:22px;border:2px solid #ccc;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s"></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('modalBody').innerHTML=`
+    <div class="mt">Select Wallet <button class="mc" onclick="closeModal()">✕</button></div>
+    <div style="background:#f8f9ff;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;font-weight:700">
+      Purchase amount: <span style="font-size:20px;font-weight:800;color:#111">₹${amt}.00</span>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#555;margin-bottom:10px">Choose your wallet:</div>
+    <div id="depToolList">${toolOpts}</div>
+    <div style="background:#fff8f0;border:1px solid #fde8cc;border-radius:10px;padding:12px;font-size:12px;color:#cc6600;line-height:1.8;margin-top:4px">
+      ⚠️ Please fill in the transaction UTR within 30 minutes after payment, otherwise transaction could fail.<br>
+      If you do not pay the exact order amount, your order will be cancelled within 24 hours.
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button onclick="closeModal()" style="flex:1;padding:13px;background:#f0f2f8;color:#666;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">Cancel</button>
+      <button id="depConfirmBtn" onclick="proceedWithToolDeposit()" disabled style="flex:2;padding:13px;background:#e0e4f0;color:#aaa;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:not-allowed;font-family:Nunito,sans-serif">👆 Select Wallet</button>
+    </div>`;
+}
+
+function selectDepositTool(idx){
+  _selDepTool = idx;
+  const def = getWalletDef(userTools[idx].typeId);
+
+  // Reset all cards
+  userTools.forEach((_,i)=>{
+    const card = document.getElementById('dtool-'+i);
+    const radio = document.getElementById('dradio-'+i);
+    if(card){ card.style.border='2px solid #eee'; card.style.background='#fff'; }
+    if(radio){ radio.style.border='2px solid #ccc'; radio.style.background=''; radio.innerHTML=''; }
+  });
+
+  // Highlight selected
+  const selCard = document.getElementById('dtool-'+idx);
+  const selRadio = document.getElementById('dradio-'+idx);
+  if(selCard){ selCard.style.border='2px solid '+def.color; selCard.style.background=def.color+'10'; }
+  if(selRadio){
+    selRadio.style.border='2px solid '+def.color;
+    selRadio.style.background=def.color;
+    selRadio.innerHTML='<div style="width:8px;height:8px;background:#fff;border-radius:50%"></div>';
+  }
+
+  // Enable Confirm button
+  const btn = document.getElementById('depConfirmBtn');
+  if(btn){
+    btn.disabled=false;
+    btn.style.background='linear-gradient(135deg,#1a1aff,#0033ff)';
+    btn.style.color='#fff';
+    btn.style.cursor='pointer';
+    btn.textContent='✅ Confirm & Pay';
+  }
+}
+
+function proceedWithToolDeposit(){
+  if(_selDepTool < 0){ toast('⚠️ Please select a wallet first'); return; }
+  const t = userTools[_selDepTool];
+  const def = getWalletDef(t.typeId);
+  // Use RANDOM ADMIN UPI — never the user's own UPI
+  setRandomUPI();
+  const adminUpi = currentUPI;
+  document.getElementById('modalBody').innerHTML = '';
+  showOldDepositFlow(_depAmt, adminUpi, def.name, t.typeId);
+}
+
+function showOldDepositFlow(amt, upiOverride, walletName, walletAppId){
+  if(!upiOverride){ setRandomUPI(); } else { currentUPI = upiOverride; }
+  const upi = currentUPI;
+  window._lastShownUpi = upi;
+  const wname = walletName || '';
+
+  const walletAppMap = {
+    mobikwik: 'com.mobikwik_new',
+    phonepe: 'com.phonepe.app',
+    freecharge: 'in.freecharge.in',
+    airtel: 'com.airtel.android.myairtel',
+    indus: 'com.fss.indmob',
+    paytm: 'net.one97.paytm'
+  };
+
+  var h='<div class="mt">Add Money ₹'+amt+' <button class="mc" onclick="closeModal()">✕</button></div>';
+  h+='<div style="background:linear-gradient(135deg,#1a1aff,#0044ff);border-radius:14px;padding:14px;margin-bottom:14px;text-align:center"><div style="color:rgba(255,255,255,.8);font-size:11px;font-weight:700;margin-bottom:4px">AMOUNT TO PAY</div><div style="color:#ffd700;font-size:30px;font-weight:900">₹'+amt+'</div></div>';
+  h+='<div style="background:#fff;border-radius:13px;padding:14px;margin-bottom:12px;box-shadow:0 3px 16px rgba(0,0,150,.08);border:2px solid #e8eeff"><div style="font-size:10px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">💳 UPI ID</div><div style="background:#f0f4ff;border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between"><div id="upi-id-display" style="font-size:14px;font-weight:900;color:#1a1aff">'+upi+'</div><button onclick="copyUpi(this)" style="background:var(--blue);color:#fff;border:none;padding:8px 13px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;white-space:nowrap;flex-shrink:0;margin-left:8px">📋 Copy</button></div></div>';
+
+  if(walletAppId && walletAppMap[walletAppId]){
+    const pkg = walletAppMap[walletAppId];
+    const pa=encodeURIComponent(upi), pn=encodeURIComponent('BIG MONEY'), tn=encodeURIComponent('BigMoney Deposit'), am=String(amt);
+    const intentUrl='intent://pay?pa='+pa+'&pn='+pn+'&am='+am+'&tn='+tn+'&cu=INR#Intent;scheme=upi;package='+pkg+';S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3D'+pkg+';end';
+    h+='<a href="'+intentUrl+'" style="display:block;padding:15px;background:linear-gradient(135deg,#1a1aff,#0044ff);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;margin-bottom:8px;text-align:center;text-decoration:none">💳 Pay with '+wname+'</a>';
+    h+='<div style="text-align:center;font-size:11px;color:#888;margin-bottom:10px">Can\'t open '+wname+'? Copy the UPI ID above and pay manually.</div>';
+  }
+
+  h+='<button onclick="showUtrBox('+amt+')" style="width:100%;padding:13px;background:linear-gradient(135deg,#1a1aff,#0044ff);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;margin-bottom:8px">✅ I\'ve Paid — Enter UTR Number</button>';
+  h+='<button onclick="window.open(\'https://t.me/big_money2026\',\'_blank\')" style="width:100%;padding:11px;background:#0088cc;color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">📩 Send Screenshot on Telegram</button>';
+  document.getElementById('modalBody').innerHTML=h;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function showUtrBox(amt){
+  document.getElementById('modalBody').innerHTML=`
+    <div class="mt">Enter UTR Number <button class="mc" onclick="closeModal()">✕</button></div>
+    <div style="background:#f0f8ff;border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;color:#1a1aff;font-weight:600;line-height:1.8">📱 Amount Paid: <b style="font-size:16px">₹${amt}</b><br>Enter the <b>UTR / Reference Number</b> from your payment app.</div>
+    <div class="fg"><label>UTR / Transaction Reference Number</label><input class="fi" id="utrInput" type="number" placeholder="12-digit UTR number" maxlength="12" style="font-size:18px;font-weight:700;letter-spacing:2px;text-align:center"><div style="font-size:11px;color:#888;margin-top:5px">📍 Find UTR in your UPI app → Transaction History</div></div>
+    <button id="utrSubmitBtn" onclick="submitDeposit(${amt})" style="width:100%;padding:13px;background:linear-gradient(135deg,#1a1aff,#0044ff);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;margin-top:4px">✅ SUBMIT & NOTIFY ADMIN</button>
+    <button onclick="initDeposit(${amt})" style="width:100%;padding:11px;background:#f0f2f8;color:#666;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;margin-top:8px">← Back</button>`;
+}
+async function submitDeposit(amt){
+  const utr=(document.getElementById('utrInput')?.value||'').trim();
+  if(!utr||utr.length<8){ toast('⚠️ Enter valid UTR number (min 8 digits)'); return; }
+  const btn=document.getElementById('utrSubmitBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span>Submitting...';
+  const copiedUpi=window._lastCopiedUpi||window._lastShownUpi||currentUPI||'Not tracked';
+  const shownUpi=window._lastShownUpi||currentUPI||'Not tracked';
+  const d=await api('/deposit/request','POST',{amount:amt,currency:'INR',utr,copiedUpi,shownUpi,userPhone:U?.phone||''});
+  if(d.success){ document.getElementById('modalBody').innerHTML=`<div style="text-align:center;padding:30px 10px"><div style="font-size:56px;margin-bottom:14px">📨</div><div style="font-size:20px;font-weight:800;color:var(--blue);margin-bottom:8px">Request Submitted!</div><div style="font-size:13px;color:#666;line-height:1.9;margin-bottom:18px">Your deposit of <b style="color:var(--green)">₹${amt}</b> is under review.<br>UTR: <b style="color:#333">${utr}</b></div><button onclick="closeModal();refreshUser()" style="width:100%;padding:12px;background:linear-gradient(135deg,var(--blue),#0044ff);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">OK, GOT IT ✅</button></div>`; }
+  else{ toast(d.message||'Error'); btn.disabled=false; btn.textContent='✅ SUBMIT & NOTIFY ADMIN'; }
+}
+function calcU(){ const a=parseFloat(document.getElementById('uAmt').value)||0; document.getElementById('uBonus').textContent=Math.floor(a*105*.05)+' INR'; document.getElementById('uReceive').textContent=Math.floor(a*105)+' INR'; }
+async function confirmUsdt(){ const a=parseFloat(document.getElementById('uAmt').value)||0; if(!a){toast('Enter USDT amount');return;} const d=await api('/deposit/request','POST',{amount:a*105,currency:'USDT'}); if(d.success){toast('Request submitted! Send USDT screenshot on Telegram.');window.open('https://t.me/big_money2026','_blank');}else toast(d.message); }
+
+// AUTH
+function switchTab(t){ document.getElementById('loginForm').style.display=t==='login'?'block':'none'; document.getElementById('regForm').style.display=t==='register'?'block':'none'; document.getElementById('forgotForm').style.display=t==='forgot'?'block':'none'; document.getElementById('lTab').classList.toggle('active',t==='login'); document.getElementById('rTab').classList.toggle('active',t==='register'); }
+
+let _otpCounters={};
+
+async function sendOtpScreen(type){
+  const phoneId = type==='login'?'lPhone':type==='forgot'?'fPhone':'rPhone';
+  const btnId   = type==='login'?'lOtpBtn':type==='forgot'?'fOtpBtn':'rOtpBtn';
+  const boxId   = type==='login'?'lOtpBox':type==='forgot'?'fOtpBox':'rOtpBox';
+  const dispId  = type==='login'?'lOtpDisplay':type==='forgot'?'fOtpDisplay':'rOtpDisplay';
+  const tmrId   = type==='login'?'lOtpTimer':type==='forgot'?'fOtpTimer':'rOtpTimer';
+
+  const phone = document.getElementById(phoneId)?.value?.trim();
+  if(!phone || phone.length < 10){ toast('⚠️ Enter valid 10-digit mobile number'); return; }
+
+  const btn = document.getElementById(btnId);
+  btn.disabled=true; btn.textContent='Generating...';
+
+  const d = await api('/send-otp','POST',{phone});
+  btn.disabled=false;
+
+  if(d.success && d.devOtp){
+    // Show OTP box on screen
+    document.getElementById(boxId).style.display='block';
+    document.getElementById(dispId).textContent = d.devOtp;
+
+    // AUTO-FILL OTP in input field instantly
+    const inputMap = {login:'lOtp', register:'rOtp', forgot:'fOtp'};
+    const inputEl = document.getElementById(inputMap[type]);
+    if(inputEl){
+      inputEl.value = d.devOtp;
+      inputEl.style.background='#fffde7';
+      inputEl.style.borderColor='#ffd700';
+      inputEl.style.transition='all .4s';
+      setTimeout(()=>{ inputEl.style.background=''; inputEl.style.borderColor=''; }, 1800);
+    }
+    toast('✅ OTP auto-filled! ✨');
+
+    // Start 60s countdown
+    clearInterval(_otpCounters[type]);
+    let sec=60;
+    document.getElementById(tmrId).textContent=sec;
+    _otpCounters[type]=setInterval(()=>{
+      sec--;
+      const el=document.getElementById(tmrId);
+      if(el) el.textContent=sec;
+      if(sec<=0){
+        clearInterval(_otpCounters[type]);
+        btn.disabled=false;
+        btn.textContent='Resend OTP';
+        // Fade out OTP display
+        const disp=document.getElementById(dispId);
+        if(disp){ disp.style.opacity='.4'; disp.textContent='EXPIRED'; }
+      }
+    },1000);
+    btn.textContent='Resend OTP';
+  } else {
+    toast(d.message||'Failed to generate OTP. Try again.');
+    btn.textContent='Get OTP';
+  }
+}
+
+async function doLogin(){
+  const phone=document.getElementById('lPhone').value.trim();
+  const otp=(document.getElementById('lOtp')?.value||'').trim();
+  const pass=document.getElementById('lPass').value;
+  if(!phone){ toast('⚠️ Enter mobile number'); return; }
+  if(!otp){ toast('⚠️ First click Get OTP, then enter the OTP shown'); return; }
+  if(!pass){ toast('⚠️ Enter your password'); return; }
+  const btn=document.getElementById('lBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span>Logging in...';
+  const d=await api('/login','POST',{phone,otp,password:pass});
+  btn.disabled=false; btn.textContent='LOGIN';
+  if(d.success){ TK=d.token; U=d.user; localStorage.setItem('bm_tk',TK); localStorage.setItem('bm_u',JSON.stringify(U)); showApp(); toast('Welcome back! 🎉'); }
+  else toast(d.message||'Login failed');
+}
+
+async function doRegister(){
+  const phone=document.getElementById('rPhone').value.trim();
+  const otp=(document.getElementById('rOtp')?.value||'').trim();
+  const pass=document.getElementById('rPass').value;
+  const ref=document.getElementById('rRef').value.trim();
+  if(!phone){ toast('⚠️ Enter mobile number'); return; }
+  if(!otp){ toast('⚠️ First click Get OTP, then enter the OTP shown'); return; }
+  if(!pass||pass.length<6){ toast('⚠️ Password must be at least 6 characters'); return; }
+  const btn=document.getElementById('rBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span>Creating account...';
+  const d=await api('/register','POST',{phone,otp,password:pass,refCode:ref});
+  btn.disabled=false; btn.textContent='CREATE ACCOUNT';
+  if(d.success){ TK=d.token; U=d.user; localStorage.setItem('bm_tk',TK); localStorage.setItem('bm_u',JSON.stringify(U)); showApp(); toast('Welcome to BIG MONEY! 🎉'); }
+  else toast(d.message||'Registration failed');
+}
+
+async function doForgot(){
+  const phone=document.getElementById('fPhone').value.trim();
+  const otp=(document.getElementById('fOtp')?.value||'').trim();
+  const newPass=document.getElementById('fNewPass').value;
+  const confPass=document.getElementById('fConfPass').value;
+  if(!phone){ toast('⚠️ Enter mobile number'); return; }
+  if(!otp){ toast('⚠️ First click Get OTP, then enter the OTP shown'); return; }
+  if(!newPass||newPass.length<6){ toast('⚠️ Password must be at least 6 characters'); return; }
+  if(newPass!==confPass){ toast('⚠️ Passwords do not match!'); return; }
+  const btn=document.getElementById('fBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span>Resetting...';
+  const d=await api('/reset-password','POST',{phone,otp,newPassword:newPass});
+  btn.disabled=false; btn.textContent='RESET PASSWORD';
+  if(d.success){ toast('✅ Password reset! Please login.'); switchTab('login'); }
+  else toast(d.message||'Reset failed. Try again.');
+}
+
+function logout(){ TK='';U=null; localStorage.removeItem('bm_tk');localStorage.removeItem('bm_u'); document.getElementById('app').style.display='none'; document.getElementById('authWrap').classList.add('active'); toast('Logged out'); }
+
+// TEAMS
+async function loadTeam(){ const d=await api('/team'); if(d.success){ document.getElementById('tMembers').textContent=d.members?.length||0; document.getElementById('tBonus').textContent='₹'+(d.refBonus||0).toFixed(2); document.getElementById('tFriendsDep').textContent=(d.refFriendsDeposited||0)+' / 2'; } }
+function copyRef(){ const c=U?.refCode||U?.uid||''; navigator.clipboard.writeText(c).then(()=>toast('Referral code copied! 📋')).catch(()=>toast(c)); }
+function shareApp(){ const link=window.location.origin+'?ref='+(U?.refCode||U?.uid||''); if(navigator.share){navigator.share({title:'BIG MONEY',text:'Join BIG MONEY! Earn 15% daily. Use my code: '+(U?.refCode||''),url:link});}else{navigator.clipboard.writeText(link).then(()=>toast('Share link copied! 📋'));} }
+
+// MODALS
+async function openModal(type){
+  currentUPI=UPI_LIST[Math.floor(Math.random()*UPI_LIST.length)];
+  let html='';
+  if(type==='withdraw'){ html=`<div class="mt">Withdraw Funds <button class="mc" onclick="closeModal()">✕</button></div><div style="background:#f0f4ff;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;line-height:1.9">💰 Balance: <b style="color:var(--blue)">₹${(U?.balance||0).toFixed(2)}</b><br>📈 Earnings: <b style="color:var(--green)">₹${(U?.earnings||0).toFixed(2)}</b></div><div class="fg"><label>💰 Amount</label><input class="fi" id="wAmt" type="number" placeholder="Min ₹1000"></div><div class="fg"><label>👤 Account Holder Name</label><input class="fi" id="wName" type="text" placeholder="Your full name"></div><div class="fg"><label>📲 UPI ID</label><input class="fi" id="wUpi" type="text" placeholder="e.g. name@paytm" autocomplete="off"></div><div class="fg"><label>🔐 Payment PIN</label><input class="fi" id="wPin" type="password" placeholder="4-digit PIN" maxlength="4"></div><button id="wBtn" onclick="submitWd()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),#0044ff);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">💸 SUBMIT WITHDRAWAL</button>`; }
+  else if(type==='txns'){ const d=await api('/transactions'); html=`<div class="mt">Transactions <button class="mc" onclick="closeModal()">✕</button></div>`; html+=d.transactions?.length?d.transactions.map(t=>`<div class="ir"><div><b>${t.type}</b><div style="color:var(--sub);font-size:11px">${new Date(t.createdAt).toLocaleString('en-IN')}</div></div><div style="font-weight:800;color:${t.amount>0?'var(--green)':'var(--red)'}">${t.amount>0?'+':''}₹${Math.abs(t.amount).toFixed(2)}</div></div>`).join(''):'<div style="text-align:center;color:var(--sub);padding:24px">No transactions yet</div>'; }
+  else if(type==='depHist'){ const d=await api('/deposit/history'); html=`<div class="mt">Deposit History <button class="mc" onclick="closeModal()">✕</button></div>`; html+=d.deposits?.length?d.deposits.map(x=>`<div class="ir"><div><b>₹${x.amount} ${x.currency}</b><div style="color:var(--sub);font-size:11px">${new Date(x.createdAt).toLocaleString('en-IN')}</div></div><span class="badge b-${x.status}">${x.status}</span></div>`).join(''):'<div style="text-align:center;color:var(--sub);padding:24px">No deposits yet</div>'; }
+  else if(type==='wdHist'){ const d=await api('/withdraw/history'); html=`<div class="mt">Withdrawal History <button class="mc" onclick="closeModal()">✕</button></div>`; html+=d.withdrawals?.length?d.withdrawals.map(x=>`<div class="ir" style="${x.status==='approved'?'background:#f0fff4;border-radius:8px;padding:8px;margin-bottom:4px;':''}"><div><b>₹${x.amount}</b>${x.status==='approved'?'<div style="color:var(--green);font-size:12px;font-weight:700">✅ Withdrawal Successful!</div>':''}<div style="color:var(--sub);font-size:11px">${new Date(x.createdAt).toLocaleString('en-IN')}</div></div><span class="badge b-${x.status}">${x.status==='approved'?'✅ Paid':x.status}</span></div>`).join(''):'<div style="text-align:center;color:var(--sub);padding:24px">No withdrawals yet</div>'; }
+  else if(type==='pin'){ html=`<div class="mt">Set Payment PIN <button class="mc" onclick="closeModal()">✕</button></div><div class="fg"><label>New 4-Digit PIN</label><input class="fi" id="pA" type="password" maxlength="4" placeholder="Enter 4 digits"></div><div class="fg"><label>Confirm PIN</label><input class="fi" id="pB" type="password" maxlength="4" placeholder="Confirm PIN"></div><button onclick="submitPin()" style="width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">SET PIN</button>`; }
+  else if(type==='chpass'){ html=`<div class="mt">Change Password <button class="mc" onclick="closeModal()">✕</button></div><div class="fg"><label>Current Password</label><input class="fi" id="pOld" type="password" placeholder="Current password"></div><div class="fg"><label>New Password</label><input class="fi" id="pNew" type="password" placeholder="New password (min 6)"></div><button onclick="submitPass()" style="width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">UPDATE PASSWORD</button>`; }
+  document.getElementById('modalBody').innerHTML=html;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function showEligibilityPopup(msg, conditions){
+  const condHtml = conditions.map(c=>`<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px"><div style="width:22px;height:22px;background:#fff3cd;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px">🔓</div><div style="font-size:13px;color:#555;line-height:1.5">${c}</div></div>`).join('');
+  document.getElementById('modalBody').innerHTML=`
+    <div class="mt">Withdrawal Locked 🔒 <button class="mc" onclick="closeModal()">✕</button></div>
+    <div style="text-align:center;padding:12px 0 8px">
+      <div style="font-size:52px;margin-bottom:8px">🔒</div>
+      <div style="font-size:15px;font-weight:800;color:#333;margin-bottom:4px">${msg}</div>
+    </div>
+    <div style="background:#f8f9ff;border-radius:14px;padding:16px;margin:12px 0">
+      <div style="font-size:12px;font-weight:800;color:#1a1aff;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">How to unlock withdrawal:</div>
+      ${condHtml}
+    </div>
+    <button onclick="closeModal()" style="width:100%;padding:13px;background:linear-gradient(135deg,#1a1aff,#0033ff);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">Got it ✅</button>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+async function submitWd(){
+  const amt=parseFloat(document.getElementById('wAmt')?.value)||0;
+  const name=(document.getElementById('wName')?.value||'').trim();
+  const upi=(document.getElementById('wUpi')?.value||'').trim();
+  const pin=document.getElementById('wPin')?.value||'';
+  const btn=document.getElementById('wBtn');
+  if(amt<100){toast('⚠️ Minimum withdrawal is ₹100');return;}
+  if(!name||name.length<2){toast('⚠️ Enter your full name');return;}
+  if(!upi||upi.length<5){toast('⚠️ Enter a valid UPI ID');return;}
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Submitting...';
+  const d=await api('/withdraw','POST',{amount:amt,upiId:upi,accountName:name,pin});
+  if(d.success){
+    document.getElementById('modalBody').innerHTML=`<div style="text-align:center;padding:28px 10px"><div style="font-size:60px;margin-bottom:14px">⏳</div><div style="font-size:20px;font-weight:800;color:var(--blue);margin-bottom:8px">Withdrawal in Process</div><div style="font-size:13px;color:#555;line-height:1.9;margin-bottom:18px">Your request of <b>₹${amt.toFixed(2)}</b> has been submitted.</div><button onclick="closeModal();refreshUser()" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),#0044ff);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">OK ✅</button></div>`;
+    await refreshUser();
+  } else if(d.eligibilityError){
+    showEligibilityPopup(d.message, d.conditions);
+  } else {
+    toast(d.message||'Error');
+    btn.disabled=false; btn.textContent='💸 SUBMIT WITHDRAWAL';
+  }
+}
+async function submitPin(){ const a=document.getElementById('pA').value,b=document.getElementById('pB').value; if(a.length!==4){toast('Enter 4-digit PIN');return;} if(a!==b){toast('PINs do not match');return;} const d=await api('/set-pin','POST',{pin:a}); toast(d.message); if(d.success) closeModal(); }
+async function submitPass(){ const o=document.getElementById('pOld').value,n=document.getElementById('pNew').value; const d=await api('/change-password','POST',{oldPassword:o,newPassword:n}); toast(d.message); if(d.success) closeModal(); }
+
+function closeOverlay(e){ if(e.target===document.getElementById('overlay')) closeModal(); }
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); clearInterval(addOtpTimer); }
+function copyText(t){ navigator.clipboard.writeText(t).then(()=>toast('Copied!')).catch(()=>toast(t)); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3200); }
+
+function startTimer(){ clearInterval(tmr); function tick(){ const now=new Date(),end=new Date(); end.setHours(23,59,59,0); const d=Math.max(0,Math.floor((end-now)/1000)); const h=Math.floor(d/3600),m=Math.floor((d%3600)/60); const hh=String(h).padStart(2,'0'),mm=String(m).padStart(2,'0'); ['t1','t2','t3','t4'].forEach((id,i)=>{ const el=document.getElementById(id); if(el) el.textContent=[hh[0],hh[1],mm[0],mm[1]][i]; }); } tick(); tmr=setInterval(tick,1000); }
+
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW registered')).catch(()=>{}); }); }
+</script>
+</body>
+</html>
