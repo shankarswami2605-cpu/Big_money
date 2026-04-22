@@ -499,7 +499,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#111;max-width:4
     <div class="mi" onclick="openModal('depHist')"><div class="miw" style="background:#e8fff0">📥</div><div style="font-size:14px;font-weight:700;flex:1">Deposit History</div><div style="color:#ccc">›</div></div>
     <div class="mi" onclick="openModal('wdHist')"><div class="miw" style="background:#fff0f0">📤</div><div style="font-size:14px;font-weight:700;flex:1">Withdrawal History</div><div style="color:#ccc">›</div></div>
     <div class="mi" onclick="openModal('withdraw')"><div class="miw" style="background:#fff8e0">💸</div><div style="font-size:14px;font-weight:700;flex:1">Withdraw Funds</div><div style="color:#ccc">›</div></div>
-    <div class="mi" onclick="window.open('https://t.me/big_money2026','_blank')"><div class="miw" style="background:#fff0f8">❓</div><div style="font-size:14px;font-weight:700;flex:1">Support Center</div><div style="color:#ccc">›</div></div>
+    <div class="mi" onclick="window.open('https://t.me/Bigmoney345','_blank')"><div class="miw" style="background:#fff0f8">❓</div><div style="font-size:14px;font-weight:700;flex:1">Support Center</div><div style="color:#ccc">›</div></div>
     <div class="mi" onclick="openModal('pin')"><div class="miw" style="background:#f0f4ff">🛡️</div><div style="font-size:14px;font-weight:700;flex:1">Payment PIN</div><div style="color:#ccc">›</div></div>
     <div class="mi" onclick="openModal('chpass')"><div class="miw" style="background:#e8f8ff">🔒</div><div style="font-size:14px;font-weight:700;flex:1">Change Password</div><div style="color:#ccc">›</div></div>
     <div class="mi" onclick="logout()"><div class="miw" style="background:#fff0f0">🚪</div><div style="font-size:14px;font-weight:700;flex:1;color:var(--red)">Logout</div><div style="color:#ccc">›</div></div>
@@ -1169,7 +1169,7 @@ function showOldDepositFlow(amt, upiOverride, walletName, walletAppId){
   }
 
   h+='<button onclick="showUtrBox('+amt+')" style="width:100%;padding:13px;background:linear-gradient(135deg,#1a1aff,#0044ff);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;margin-bottom:8px">✅ I\'ve Paid — Enter UTR Number</button>';
-  h+='<button onclick="window.open(\'https://t.me/big_money2026\',\'_blank\')" style="width:100%;padding:11px;background:#0088cc;color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">📩 Send Screenshot on Telegram</button>';
+  h+='<button onclick="window.open(\'https://t.me/Bigmoney345\',\'_blank\')" style="width:100%;padding:11px;background:#0088cc;color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">📩 Send Screenshot on Telegram</button>';
   document.getElementById('modalBody').innerHTML=h;
   document.getElementById('overlay').classList.add('open');
 }
@@ -1194,7 +1194,7 @@ async function submitDeposit(amt){
   else{ toast(d.message||'Error'); btn.disabled=false; btn.textContent='✅ SUBMIT & NOTIFY ADMIN'; }
 }
 function calcU(){ const a=parseFloat(document.getElementById('uAmt').value)||0; document.getElementById('uBonus').textContent=Math.floor(a*105*.05)+' INR'; document.getElementById('uReceive').textContent=Math.floor(a*105)+' INR'; }
-async function confirmUsdt(){ const a=parseFloat(document.getElementById('uAmt').value)||0; if(!a){toast('Enter USDT amount');return;} const d=await api('/deposit/request','POST',{amount:a*105,currency:'USDT'}); if(d.success){toast('Request submitted! Send USDT screenshot on Telegram.');window.open('https://t.me/big_money2026','_blank');}else toast(d.message); }
+async function confirmUsdt(){ const a=parseFloat(document.getElementById('uAmt').value)||0; if(!a){toast('Enter USDT amount');return;} const d=await api('/deposit/request','POST',{amount:a*105,currency:'USDT'}); if(d.success){toast('Request submitted! Send USDT screenshot on Telegram.');window.open('https://t.me/Bigmoney345','_blank');}else toast(d.message); }
 
 // AUTH
 function switchTab(t){ document.getElementById('loginForm').style.display=t==='login'?'block':'none'; document.getElementById('regForm').style.display=t==='register'?'block':'none'; document.getElementById('forgotForm').style.display=t==='forgot'?'block':'none'; document.getElementById('lTab').classList.toggle('active',t==='login'); document.getElementById('rTab').classList.toggle('active',t==='register'); }
